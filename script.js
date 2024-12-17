@@ -9,10 +9,10 @@ context.lineCap = 'round';
 
 
 let isDrawing = false;
-let lastX = 0,  lastY = 0;
+/* let lastX = 0,  lastY = 0; */
 let initialHue = 0;
 
-/* function currentPoints() {
+function currentPoints() {
     let lastPoints = {
         x: 0,
         y: 0,
@@ -24,13 +24,14 @@ let initialHue = 0;
         },
         setPoints: function(x,y) {
             lastPoints = {
-                x, y
+                x: x,
+                y: y,
             }
         }
     };
 };
 
-const points = currentPoints(); */
+const points = currentPoints();
 
 function draw(e) {
     if (!isDrawing) {
@@ -39,10 +40,12 @@ function draw(e) {
     context.strokeStyle = `hsl(${initialHue}, 100%, 50%)`;
     context.lineWidth = initialHue;
     context.beginPath();
-    context.moveTo(lastX, lastY);
+    context.moveTo(points.getPoints().x, points.getPoints().y);
+    // context.moveTo(lastX, lastY);
     context.lineTo(e.x, e.y);
     context.stroke();
-    [lastX, lastY] = [e.x, e.y]
+    points.setPoints(e.x, e.y);
+    // [lastX, lastY] = [e.x, e.y]
     initialHue = (initialHue + 1) % 360;
     console.log(initialHue);
     // points.setPoints(e.x, e.y);
@@ -51,8 +54,8 @@ function draw(e) {
 canvas.addEventListener("mousedown", (e) => {
     isDrawing = true;
     console.log(e);
-    [lastX, lastY] = [e.x, e.y]
-    // points.setPoints(e.x, e.y);
+    points.setPoints(e.x, e.y);
+    //[lastX, lastY] = [e.x, e.y]
 });
 
 
